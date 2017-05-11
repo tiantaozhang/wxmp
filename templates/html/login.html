@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "html/base.html" %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Sign In</h1>
+    <form action="" method="post" name="login">
+        {{form.hidden_tag()}}
+        <p>
+            Please enter your Name:<br>
+            {{form.name(size=80)}} <br>
+        </p>
+        <p>
+            Password:<br>
+            {{form.password}}
+        </p>
+        <p>{{form.remember_me}} Remember Me?</p>
+        <p><input type="submit" value="Sign In"></p>
+    </form>
+</body>
+
+{% endblock %}
+
+</html>

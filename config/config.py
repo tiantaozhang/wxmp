@@ -1,0 +1,2 @@
+CSRF_ENABLED = False
+SECRET_KEY = 'tatumn2017'

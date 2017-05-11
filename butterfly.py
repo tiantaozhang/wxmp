@@ -2,9 +2,12 @@ import hashlib
 
 from flask import Flask
 from flask import request
+from flask import render_template
+from controller.form import LoginForm
 
 app = Flask(__name__)
-
+# app.config.from_object('config')
+app.config.from_pyfile('config/config.py')
 #
 # @app.route("/")
 # def hello():
@@ -12,9 +15,29 @@ app = Flask(__name__)
 
 
 @app.route('/', methods=['GET', 'POST'])
+@app.route('/index')
 def home():
-    return '<h1>home</h1>'
+    user = {'nickname': 'tatumn'}
+    posts = [
+        {
+            'author': {'nickname': 'John'},
+            'body': 'Beautiful day in Portland!'
+        },
+        {
+            'author': {'nickname': 'Susan'},
+            'body': 'The Avengers movie was so cool!'
+        }
+    ]
+    return render_template('html/index.html', title='home', user=user, posts=posts)
+    # return '<h1>home</h1>'
 
+
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    return render_template('html/login.html',
+        title = 'Sign In',
+        form = form)
 
 @app.route('/signin', methods=['GET'])
 def signin_form():
