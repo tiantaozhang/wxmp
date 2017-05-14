@@ -18,4 +18,8 @@ class TestHandle(TestCase):
         print list
         print hashcode
 
-
+    def test_for(self):
+        future_class_attr = {'__name__': 'name', '_name_': '_name', "name": "name", "__start__": "start"}
+        attrs = ((name, value) for name, value in future_class_attr.items() if not name.startswith('__'))
+        for attr in attrs:
+            print attr

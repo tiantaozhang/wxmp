@@ -4,10 +4,15 @@ from flask import Flask
 from flask import request
 from flask import render_template
 from controller.form import LoginForm
+from flask_script import Manager
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 # app.config.from_object('config')
 app.config.from_pyfile('config/config.py')
+
+bootstrap = Bootstrap(app)
+manager = Manager(app)
 #
 # @app.route("/")
 # def hello():
@@ -30,6 +35,10 @@ def home():
     ]
     return render_template('html/index.html', title='home', user=user, posts=posts)
     # return '<h1>home</h1>'
+
+@app.route('/user/<name>', methods=['GET'])
+def user(name):
+    return render_template('html/user.html',name=name)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -55,6 +64,13 @@ def signin():
         return '<h3>Hello, admin!</h3>'
     return '<h3>bad username or password.</h3>'
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('html/404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('html/500.html'), 500
 
 @app.route('/wx', methods=['GET', 'POST'])
 def handle_wx_token():
@@ -85,3 +101,4 @@ def handle_wx_token():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=15000, debug=True)
+    # manager.run()

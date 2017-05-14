@@ -1,8 +1,13 @@
-
 {% extends "html/base.html" %}
-{% block content %}
-    <h1>Hello, {{ user.nickname }}</h1>
-    {% for post in posts %}
-    <p>{{ post.author.nickname }} says:<b>{{post.body}}</b></p>
-    {% endfor %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+    h1 {color: red}
+</style>
 {% endblock %}
+{% block body %}
+<h1>Hello World!</h1>
+{% endblock %}
+
+
