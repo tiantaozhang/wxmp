@@ -2,24 +2,24 @@ import hashlib
 
 from flask import Flask
 from flask import request
-from flask import render_template
+from flask import render_template, session, redirect, url_for, flash
 from controller.form import LoginForm
+from controller.form import NameForm
 from flask_script import Manager
 from flask_bootstrap import Bootstrap
+from flask_moment import Moment
+from datetime import datetime
 
 app = Flask(__name__)
 # app.config.from_object('config')
 app.config.from_pyfile('config/config.py')
 
 bootstrap = Bootstrap(app)
+moment = Moment(app)
 manager = Manager(app)
-#
-# @app.route("/")
-# def hello():
-#     return "hello world!"
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET',  'POST'])
 @app.route('/index')
 def home():
     user = {'nickname': 'tatumn'}
@@ -33,20 +33,28 @@ def home():
             'body': 'The Avengers movie was so cool!'
         }
     ]
-    return render_template('html/index.html', title='home', user=user, posts=posts)
-    # return '<h1>home</h1>'
+    form = NameForm()
+    if form.validate_on_submit():
+        old_name = session.get('name')
+        if old_name is not None and old_name != form.name.data:
+            flash('Looks like you have changed your name!')
+        session['name'] = form.name.data
+        return redirect(url_for('home'))
+    return render_template('html/index.html', title='home', user=user, current_time=datetime.utcnow(), form=form , name=session.get('name') , posts=posts)
+
 
 @app.route('/user/<name>', methods=['GET'])
 def user(name):
-    return render_template('html/user.html',name=name)
+    return render_template('html/user.html', name=name)
 
 
-@app.route('/login', methods = ['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     return render_template('html/login.html',
-        title = 'Sign In',
-        form = form)
+                           title='Sign In',
+                           form=form)
+
 
 @app.route('/signin', methods=['GET'])
 def signin_form():
@@ -64,13 +72,16 @@ def signin():
         return '<h3>Hello, admin!</h3>'
     return '<h3>bad username or password.</h3>'
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('html/404.html'), 404
 
+
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('html/500.html'), 500
+
 
 @app.route('/wx', methods=['GET', 'POST'])
 def handle_wx_token():
@@ -94,7 +105,7 @@ def handle_wx_token():
         if hashcode == signature:
             return echostr
         else:
-            return "<p>notice: hashcode:%s, signature:%s</p>" % (hashcode,signature)
+            return "<p>notice: hashcode:%s, signature:%s</p>" % (hashcode, signature)
     except Exception as e:
         return '<h4>"error:" + %s </h4>' % e.message
 
