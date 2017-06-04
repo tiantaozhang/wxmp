@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import hashlib
 
 from flask import Flask
@@ -9,6 +11,9 @@ from flask_script import Manager
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from datetime import datetime
+from raven.contrib.flask import Sentry
+import config.config as cf
+import logging
 
 app = Flask(__name__)
 # app.config.from_object('config')
@@ -18,6 +23,7 @@ bootstrap = Bootstrap(app)
 moment = Moment(app)
 manager = Manager(app)
 
+sentry = Sentry(dsn=cf.SENTRY_SECRECT,logging=True, level=logging.DEBUG)
 
 @app.route('/', methods=['GET',  'POST'])
 @app.route('/index')
@@ -33,6 +39,11 @@ def home():
             'body': 'The Avengers movie was so cool!'
         }
     ]
+    try:
+        1 / 0
+    except Exception:
+        sentry.captureException()
+    sentry.captureMessage('hello, world!')
     form = NameForm()
     if form.validate_on_submit():
         old_name = session.get('name')
@@ -111,5 +122,6 @@ def handle_wx_token():
 
 
 if __name__ == "__main__":
+    sentry.init_app(app)
     app.run(host='0.0.0.0', port=15000, debug=True)
     # manager.run()
