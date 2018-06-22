@@ -1,0 +1,5 @@
+<templateSet group="user">
+  <template name="gprc" value="rpc $method$ ($method$Request) returns ($method$Response){&#10;}&#10;&#10;message $method$Request {&#10;}&#10;&#10;message $method$Response {&#10;&#9;utils.Status status = 1;&#10;}" toReformat="false" toShortenFQNames="true">
+    <variable name="method" expression="" defaultValue="" alwaysStopAt="true" />
+  </template>
+</templateSet>
