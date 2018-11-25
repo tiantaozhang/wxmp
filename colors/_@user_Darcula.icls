@@ -4,11 +4,12 @@
     <property name="created">2017-06-25T10:39:21</property>
     <property name="ide">Python</property>
     <property name="ideVersion">2017.1.4.0.0</property>
-    <property name="modified">2018-05-04T16:07:46</property>
+    <property name="modified">2018-11-25T10:49:07</property>
     <property name="originalScheme">Darcula</property>
   </metaInfo>
-  <option name="EDITOR_FONT_SIZE" value="12" />
+  <option name="EDITOR_FONT_SIZE" value="14" />
   <option name="CONSOLE_FONT_NAME" value="Menlo" />
+  <option name="CONSOLE_FONT_SIZE" value="12" />
   <option name="EDITOR_FONT_NAME" value="Monaco" />
   <attributes>
     <option name="MARKDOWN_NAVIGATOR.BOLD_TEXT_ABBREVIATED_TEXT">
